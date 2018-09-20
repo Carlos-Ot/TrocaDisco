@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+
+
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    api "com.android.support:appcompat-v7:$support_library_version"
+    api "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+
+    //Room
+    api "android.arch.persistence.room:runtime:$room_version"
+    api "android.arch.persistence.room:rxjava2:$room_version"
+    api "android.arch.persistence.room:guava:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
+
+    //Dependency Injection
+    api "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
+    api "org.kodein.di:kodein-di-framework-android-support:$kodein_version"
+
+    //Tests
+    api "com.natpryce:hamkrest:$hamkrest_version"
+}
