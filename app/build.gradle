@@ -7,9 +7,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-
-    def API_URL = "API_URL"
-
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.borderdev.trocaodisco"
@@ -31,12 +28,10 @@ android {
         development {
             applicationIdSuffix ".development"
             versionNameSuffix ".dev"
-            buildConfigField "String", API_URL, '"https://trocaodisco.com.br/"'
             dimension "default"
         }
 
         production {
-            buildConfigField "String", API_URL, '"https://trocaodisco.com.br/"'
             dimension "default"
         }
     }

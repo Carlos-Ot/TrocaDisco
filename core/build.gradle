@@ -7,10 +7,9 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
+    def BASE_URL = "BASE_URL"
+
     compileSdkVersion 28
-
-
-
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 28
@@ -25,6 +24,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", BASE_URL, '"https://trocaodisco.com.br/"'
+        }
+        debug {
+            buildConfigField "String", BASE_URL, '"https://trocaodisco.com.br/"'
         }
     }
 

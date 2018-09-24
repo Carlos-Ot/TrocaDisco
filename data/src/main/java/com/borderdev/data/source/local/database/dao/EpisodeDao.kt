@@ -6,18 +6,20 @@ import android.arch.persistence.room.OnConflictStrategy.IGNORE
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 import com.borderdev.data.entity.Episode
+import io.reactivex.Flowable
+import io.reactivex.Maybe
 
 @Dao
 interface EpisodeDao {
 
     @Query("SELECT * FROM tb_episode")
-    fun getAll(): List<Episode>
+    fun getAll(): Flowable<List<Episode>>
 
     @Query("SELECT * FROM tb_episode WHERE episode_type = :type")
-    fun getByType(type: Int): List<Episode>
+    fun getByType(type: Int): Flowable<List<Episode>>
 
     @Query("SELECT * FROM tb_episode WHERE _id = :id")
-    fun getById(id: Long): Episode
+    fun getById(id: Long): Maybe<Episode>
 
     @Insert(onConflict = IGNORE)
     fun insert(episode: Episode): Long

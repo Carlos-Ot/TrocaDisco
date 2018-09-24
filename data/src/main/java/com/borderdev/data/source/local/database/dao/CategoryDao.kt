@@ -2,17 +2,19 @@ package com.borderdev.data.source.local.database.dao
 
 import android.arch.persistence.room.*
 import com.borderdev.data.entity.Category
+import io.reactivex.Flowable
+import io.reactivex.Maybe
 
 @Dao
 interface CategoryDao {
     @Query("SELECT * FROM tb_category")
-    fun getAll(): List<Category>
+    fun getAll(): Flowable<List<Category>>
 
     @Query("SELECT * FROM tb_category WHERE episode_id = :episodeId")
-    fun getByEpisode(episodeId: Long): List<Category>
+    fun getByEpisode(episodeId: Long): Flowable<List<Category>>
 
     @Query("SELECT * FROM tb_category WHERE _id = :id")
-    fun getById(id: Long): Category
+    fun getById(id: Long): Maybe<Category>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(category: Category): Long

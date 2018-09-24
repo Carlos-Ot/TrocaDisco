@@ -6,15 +6,17 @@ import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 import com.borderdev.data.entity.Post
+import io.reactivex.Flowable
+import io.reactivex.Maybe
 
 @Dao
 interface PostDao {
 
     @Query("SELECT * FROM tb_post")
-    fun getAll(): List<Post>
+    fun getAll(): Flowable<List<Post>>
 
     @Query("SELECT * FROM tb_post WHERE _id = :id")
-    fun getById(id: Long): Post
+    fun getById(id: Long): Maybe<Post>
 
     @Insert(onConflict = REPLACE)
     fun insert(episode: Post): Long
