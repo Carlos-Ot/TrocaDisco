@@ -1,6 +1,6 @@
 package com.borderdev.data.database
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.runner.AndroidJUnit4
 import com.borderdev.data.entity.Category
 import com.borderdev.data.entity.EpisodeCategories
 import com.borderdev.data.entity.enum.EpisodeType

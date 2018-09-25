@@ -1,7 +1,7 @@
 package com.borderdev.data.database
 
 import android.content.Context
-import android.support.test.InstrumentationRegistry
+import androidx.test.InstrumentationRegistry
 import com.borderdev.data.entity.Category
 import com.borderdev.data.entity.Episode
 import com.borderdev.data.entity.Post
@@ -12,7 +12,6 @@ import com.borderdev.data.source.local.database.dao.EpisodeCategoriesDao
 import com.borderdev.data.source.local.database.dao.EpisodeDao
 import com.borderdev.data.source.local.database.dao.PostDao
 import org.junit.After
-import org.junit.AfterClass
 import org.junit.BeforeClass
 import java.util.*
 

@@ -1,6 +1,6 @@
 package com.borderdev.data.database
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.runner.AndroidJUnit4
 import com.natpryce.hamkrest.assertion.assert
 import com.natpryce.hamkrest.isEmpty
 import org.junit.Assert.*

@@ -16,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -38,14 +38,14 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    api "com.android.support:appcompat-v7:$support_library_version"
-    api "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    api "androidx.appcompat:appcompat:$app_compat_version"
+    api "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
     //Room
-    api "android.arch.persistence.room:runtime:$room_version"
-    api "android.arch.persistence.room:rxjava2:$room_version"
-    api "android.arch.persistence.room:guava:$room_version"
-    kapt "android.arch.persistence.room:compiler:$room_version"
+    api "androidx.room:room-runtime:$room_version"
+    api "androidx.room:room-rxjava2:$room_version"
+    api "androidx.room:room-guava:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     //Dependency Injection
     api "org.kodein.di:kodein-di-generic-jvm:$kodein_version"

@@ -1,6 +1,5 @@
 package com.borderdev.data.source.local.database.dao
 
-import android.arch.persistence.room.*
 import com.borderdev.data.entity.Category
 import io.reactivex.Flowable
 import io.reactivex.Maybe

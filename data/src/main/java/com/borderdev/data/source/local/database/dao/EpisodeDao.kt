@@ -1,10 +1,10 @@
 package com.borderdev.data.source.local.database.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy.IGNORE
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Update
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy.IGNORE
+import androidx.room.Query
+import androidx.room.Update
 import com.borderdev.data.entity.Episode
 import io.reactivex.Flowable
 import io.reactivex.Maybe

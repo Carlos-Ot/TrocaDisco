@@ -1,8 +1,8 @@
 package com.borderdev.data.source.local.database.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Query
-import android.arch.persistence.room.Transaction
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
 import com.borderdev.data.entity.EpisodeCategories
 import io.reactivex.Flowable
 
