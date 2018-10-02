@@ -5,9 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.Query
 import androidx.room.Update
-import com.borderdev.data.entity.Episode
+import com.borderdev.data.source.local.database.entity.Episode
+import com.borderdev.data.source.local.database.entity.enum.EpisodeType
 import io.reactivex.Flowable
-import io.reactivex.Maybe
+import io.reactivex.Single
 
 @Dao
 interface EpisodeDao {
@@ -16,10 +17,10 @@ interface EpisodeDao {
     fun getAll(): Flowable<List<Episode>>
 
     @Query("SELECT * FROM tb_episode WHERE episode_type = :type")
-    fun getByType(type: Int): Flowable<List<Episode>>
+    fun getByType(type: EpisodeType): Flowable<List<Episode>>
 
     @Query("SELECT * FROM tb_episode WHERE _id = :id")
-    fun getById(id: Long): Maybe<Episode>
+    fun getById(id: Long): Single<Episode>
 
     @Insert(onConflict = IGNORE)
     fun insert(episode: Episode): Long

@@ -4,8 +4,6 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'kotlin-kapt'
-
 android {
     def BASE_URL = "BASE_URL"
 
@@ -25,10 +23,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField "String", BASE_URL, '"https://trocaodisco.com.br/"'
+            buildConfigField "String", BASE_URL, '"https://trocaodisco.com.br"'
         }
         debug {
-            buildConfigField "String", BASE_URL, '"https://trocaodisco.com.br/"'
+            buildConfigField "String", BASE_URL, '"https://trocaodisco.com.br"'
         }
     }
 
@@ -41,11 +39,10 @@ dependencies {
     api "androidx.appcompat:appcompat:$app_compat_version"
     api "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
-    //Room
-    api "androidx.room:room-runtime:$room_version"
-    api "androidx.room:room-rxjava2:$room_version"
-    api "androidx.room:room-guava:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+//    //Room
+//    api "androidx.room:room-runtime:$room_version"
+//    api "androidx.room:room-rxjava2:$room_version"
+//    api "androidx.room:room-guava:$room_version"
 
     //Dependency Injection
     api "org.kodein.di:kodein-di-generic-jvm:$kodein_version"

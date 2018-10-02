@@ -1,4 +1,4 @@
-package com.borderdev.data.entity
+package com.borderdev.data.source.local.database.entity
 
 import androidx.room.Embedded
 import androidx.room.Relation

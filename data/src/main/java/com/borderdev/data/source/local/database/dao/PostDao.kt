@@ -5,9 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import androidx.room.Update
-import com.borderdev.data.entity.Post
+import com.borderdev.data.source.local.database.entity.Post
+import com.borderdev.data.source.local.database.entity.enum.PostType
 import io.reactivex.Flowable
-import io.reactivex.Maybe
+import io.reactivex.Single
 
 @Dao
 interface PostDao {
@@ -16,7 +17,10 @@ interface PostDao {
     fun getAll(): Flowable<List<Post>>
 
     @Query("SELECT * FROM tb_post WHERE _id = :id")
-    fun getById(id: Long): Maybe<Post>
+    fun getById(id: Long): Single<Post>
+
+    @Query("SELECT * FROM tb_post WHERE post_type = :type")
+    fun getByType(type: PostType): Flowable<List<Post>>
 
     @Insert(onConflict = REPLACE)
     fun insert(episode: Post): Long

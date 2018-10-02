@@ -1,18 +1,21 @@
 package com.borderdev.data.source.local.database
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import android.content.Context
-import com.borderdev.data.entity.Category
-import com.borderdev.data.entity.Episode
-import com.borderdev.data.entity.Post
+import androidx.room.TypeConverters
+import com.borderdev.data.source.local.database.converters.EnumTypeConverters
 import com.borderdev.data.source.local.database.dao.CategoryDao
 import com.borderdev.data.source.local.database.dao.EpisodeCategoriesDao
 import com.borderdev.data.source.local.database.dao.EpisodeDao
 import com.borderdev.data.source.local.database.dao.PostDao
+import com.borderdev.data.source.local.database.entity.Category
+import com.borderdev.data.source.local.database.entity.Episode
+import com.borderdev.data.source.local.database.entity.Post
 
-@Database(entities = arrayOf(Episode::class, Post::class, Category::class), version = 1, exportSchema = false)
+@Database(entities = [Episode::class, Post::class, Category::class], version = 1, exportSchema = false)
+@TypeConverters(EnumTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun episodeDao(): EpisodeDao
@@ -31,6 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         private val lock = Any()
 
+        @JvmStatic
         fun getInstance(context: Context): AppDatabase {
             synchronized(lock) {
                 if (instance == null) {

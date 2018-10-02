@@ -2,10 +2,10 @@ package com.borderdev.data.database
 
 import android.content.Context
 import androidx.test.InstrumentationRegistry
-import com.borderdev.data.entity.Category
-import com.borderdev.data.entity.Episode
-import com.borderdev.data.entity.Post
-import com.borderdev.data.entity.enum.EpisodeType
+import com.borderdev.data.source.local.database.entity.Category
+import com.borderdev.data.source.local.database.entity.Episode
+import com.borderdev.data.source.local.database.entity.Post
+import com.borderdev.data.source.local.database.entity.enum.EpisodeType
 import com.borderdev.data.source.local.database.AppDatabase
 import com.borderdev.data.source.local.database.dao.CategoryDao
 import com.borderdev.data.source.local.database.dao.EpisodeCategoriesDao
@@ -64,7 +64,7 @@ abstract class BaseTestDatabase {
 
     @After
     fun clearTables() {
-        episodeDao.deleteAll()
+//        episodeDao.deleteAll()
         categoryDao.deleteAll()
         postDao.deleteAll()
     }
@@ -101,6 +101,7 @@ abstract class BaseTestDatabase {
         }
 
         val episodes = episodeDao.getAll()
+                .blockingFirst()
 
         for (episode in episodes) {
             categoryDao.insert(
@@ -112,6 +113,21 @@ abstract class BaseTestDatabase {
                             episodeId = episode.id),
                     Category(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
                             episodeId = episode.id)
+            )
+        }
+
+    }
+
+    fun populateEpisodes(numberOfEpisodes: Int) {
+        for (index in 0..numberOfEpisodes) {
+            episodeDao.insert(
+                    Episode(
+                            title = episodeNames.get(Random().nextInt(episodeNames.size)),
+                            episodeNumber = index,
+                            description = "In this episode we will test the Database",
+                            pubDate = "18-09-2018",
+                            downloadUrl = "http://podcast.com",
+                            type = Random().nextInt(EpisodeType.values().size))
             )
         }
     }
@@ -134,6 +150,7 @@ abstract class BaseTestDatabase {
         populateEpisodesAndCategories(numberOfCategories * 2)
 
         val episodes = episodeDao.getAll()
+                .blockingFirst()
 
         for (episode in episodes) {
             for (index in 0..numberOfCategories) {

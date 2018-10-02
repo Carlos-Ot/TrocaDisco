@@ -1,10 +1,8 @@
-package com.borderdev.data.entity
+package com.borderdev.data.source.local.database.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
-import com.borderdev.data.entity.enum.EpisodeType
+import androidx.room.*
+import com.borderdev.data.source.local.database.converters.EnumTypeConverters
+import com.borderdev.data.source.local.database.entity.enum.EpisodeType
 
 @Entity(tableName = "tb_episode")
 data class Episode(
@@ -35,7 +33,7 @@ data class Episode(
         var downloadPath: String,
 
         @ColumnInfo(name = "episode_type")
-        var type: Int
+        var episodeType: EpisodeType
 ) {
     @Ignore
     constructor(title: String = "",
@@ -45,6 +43,6 @@ data class Episode(
                 downloadUrl: String = "",
                 downloaded: Boolean = false,
                 downloadPath: String = "",
-                type: Int = EpisodeType.DEFAULT.code
+                type: EpisodeType = EpisodeType.DEFAULT
     ) : this (0, title, episodeNumber, description, pubDate, downloadUrl, downloaded, downloadPath, type)
 }

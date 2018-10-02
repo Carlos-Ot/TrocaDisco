@@ -1,8 +1,9 @@
 package com.borderdev.data.source.local.database.dao
 
-import com.borderdev.data.entity.Category
+import androidx.room.*
+import com.borderdev.data.source.local.database.entity.Category
 import io.reactivex.Flowable
-import io.reactivex.Maybe
+import io.reactivex.Single
 
 @Dao
 interface CategoryDao {
@@ -13,7 +14,7 @@ interface CategoryDao {
     fun getByEpisode(episodeId: Long): Flowable<List<Category>>
 
     @Query("SELECT * FROM tb_category WHERE _id = :id")
-    fun getById(id: Long): Maybe<Category>
+    fun getById(id: Long): Single<Category>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(category: Category): Long

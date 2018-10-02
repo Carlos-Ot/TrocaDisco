@@ -1,23 +1,30 @@
 package com.borderdev.data.database
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.runner.AndroidJUnit4
-import com.natpryce.hamkrest.isEmpty
-import com.natpryce.hamkrest.assertion.assert
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 @RunWith(AndroidJUnit4::class)
 class CategoryDaoTest: BaseTestDatabase() {
+
+    @get: Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
     val numberOfCategories = 10
 
     @Test
     fun getAllTest() {
         populateCategory(numberOfCategories)
 
-        val categories = categoryDao.getAll()
-
-        assertTrue(categories.isNotEmpty())
+        categoryDao.getAll()
+                .test()
+                .assertValue {categories ->
+                    categories.isNotEmpty()
+                }
     }
 
     @Test
@@ -27,9 +34,12 @@ class CategoryDaoTest: BaseTestDatabase() {
 
         val categoryId = categoryDao.insert(_category)
 
-        val category = categoryDao.getById(categoryId)
-
-        assertEquals(categoryId, category.id)
+        categoryDao
+                .getById(categoryId)
+                .test()
+                .assertValue {
+                    it.id.equals(categoryId)
+                }
 
     }
 
@@ -40,9 +50,11 @@ class CategoryDaoTest: BaseTestDatabase() {
 
         categoryDao.insert(_category)
 
-        val category = categoryDao.getByEpisode(episodeId)
-
-        assertEquals(episodeId, category.first().episodeId)
+        categoryDao.getByEpisode(episodeId)
+                .test()
+                .assertValue { categories ->
+                    categories.first().episodeId == episodeId
+                }
     }
 
     @Test
@@ -70,16 +82,20 @@ class CategoryDaoTest: BaseTestDatabase() {
         val newName = "New Name Test"
         populateCategory(numberOfCategories)
 
-        val _categories = categoryDao.getAll()
+        val _category = categoryDao.getAll()
+                .blockingFirst().first()
 
-        _categories.first().name = newName
-        val categoryId = _categories.first().id
+        val categoryId = _category.id
 
-        categoryDao.update(_categories.first())
+        _category.name = newName
 
-        val category = categoryDao.getById(categoryId)
+        categoryDao.update(_category)
 
-        assertEquals(newName, category.name)
+        categoryDao.getById(categoryId)
+                .test()
+                .assertValue{ category ->
+                    category.name == newName
+                }
     }
 
     @Test
@@ -92,16 +108,16 @@ class CategoryDaoTest: BaseTestDatabase() {
             categoriesId.add(categoryDao.insert(createCategory(0)))
         }
 
-        val _category1 = categoryDao.getById(categoriesId[0])
+        val _category1 = categoryDao.getById(categoriesId[0]).blockingGet()
         _category1.name = newName
-        val _category2 = categoryDao.getById(categoriesId[1])
+        val _category2 = categoryDao.getById(categoriesId[1]).blockingGet()
         _category2.name = newName
-        val _category3 = categoryDao.getById(categoriesId[2])
+        val _category3 = categoryDao.getById(categoriesId[2]).blockingGet()
         _category3.name = newName
 
         categoryDao.update(_category1, _category2, _category3)
 
-        val categories = categoryDao.getAll()
+        val categories = categoryDao.getAll().blockingFirst()
 
         for (category in categories) {
             for (categoryId in categoriesId) {
@@ -121,11 +137,10 @@ class CategoryDaoTest: BaseTestDatabase() {
 
         categoryDao.deleteById(categoryId)
 
-        val categories = categoryDao.getAll()
+        categoryDao.getById(categoryId)
+                .test()
+                .assertNoValues()
 
-        for (category in categories) {
-            assertNotEquals(categoryId, category.id)
-        }
     }
 
     @Test
@@ -134,8 +149,11 @@ class CategoryDaoTest: BaseTestDatabase() {
 
         categoryDao.deleteAll()
 
-        val categories = categoryDao.getAll()
+        categoryDao.getAll()
+                .test()
+                .assertValue {
+                    categories-> categories.isEmpty()
+                }
 
-        assert.that(categories, isEmpty)
     }
 }

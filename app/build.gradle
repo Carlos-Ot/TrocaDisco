@@ -50,5 +50,10 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "androidx.room:room-guava:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
 }

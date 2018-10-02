@@ -3,7 +3,7 @@ package com.borderdev.data.source.local.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.borderdev.data.entity.EpisodeCategories
+import com.borderdev.data.source.local.database.entity.EpisodeCategories
 import io.reactivex.Flowable
 
 @Dao

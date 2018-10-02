@@ -7,8 +7,6 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
 
-
-
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 28
@@ -33,21 +31,38 @@ dependencies {
     implementation project(':core')
 
     //Module Dependencies
-    implementation "com.prof.rssparser:rssparser:$rss_parser_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_interceptor_version"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 
-    implementation "org.jsoup:jsoup:$jsoup_version"
     implementation "com.google.code.gson:gson:$gson_version"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+    implementation "com.tickaroo.tikxml:retrofit-converter:$tickaroo_version"
+    implementation "com.tickaroo.tikxml:annotation:$tickaroo_version"
+    implementation "com.tickaroo.tikxml:core:$tickaroo_version"
+    kapt "com.tickaroo.tikxml:processor:$tickaroo_version"
+
+    implementation "pl.droidsonroids:jspoon:$jspoon_version"
+    implementation "pl.droidsonroids.retrofit2:converter-jspoon:$jspoon_version"
+
+    implementation "org.jsoup:jsoup:$jsoup_version"
 
     //Test Dependencies
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "androidx.room:room-guava:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
 
 }

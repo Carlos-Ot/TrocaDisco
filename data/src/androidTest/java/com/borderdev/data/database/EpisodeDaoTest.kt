@@ -1,44 +1,53 @@
 package com.borderdev.data.database
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.runner.AndroidJUnit4
-import com.borderdev.data.entity.Category
-import com.borderdev.data.entity.EpisodeCategories
-import com.borderdev.data.entity.enum.EpisodeType
-import com.natpryce.hamkrest.assertion.assert
-import com.natpryce.hamkrest.isEmpty
-import org.junit.Assert.*
+import com.borderdev.data.source.local.database.entity.enum.EpisodeType
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class EpisodeDaoTest : BaseTestDatabase() {
 
+    @get: Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
     val numberOfEpisodes = 10
 
     @Test
     fun getAllTest() {
-        populateEpisodesAndCategories(numberOfEpisodes)
+        populateEpisodes(numberOfEpisodes)
 
-        val episodes = episodeDao.getAll()
-
-        assertTrue(episodes.isNotEmpty())
+        episodeDao.getAll()
+                .test()
+                .assertValue {
+                    it.isNotEmpty()
+                }
     }
 
     @Test
-    fun getByTypeTest() {
+    fun getPodcastTest() {
         populateEpisodesAndCategories(numberOfEpisodes)
 
-        val podcasts = episodeDao.getByType(EpisodeType.PODCAST.code)
+        val episodes = episodeDao.getByType(EpisodeType.PODCAST.code).blockingFirst()
 
-        for (podcast in podcasts) {
-            assertEquals(podcast.type, EpisodeType.PODCAST.code)
+        for (episode in episodes) {
+            assertEquals(EpisodeType.PODCAST.code, episode.episodeType)
+        }
+    }
+
+    @Test
+    fun getReviewTest() {
+        populateEpisodesAndCategories(numberOfEpisodes)
+
+        val episodes = episodeDao.getByType(EpisodeType.ALBUM_REVIEW.code).blockingFirst()
+
+        for (episode in episodes) {
+            assertEquals(EpisodeType.ALBUM_REVIEW.code, episode.episodeType)
         }
 
-        val albumReviews = episodeDao.getByType(EpisodeType.ALBUM_REVIEW.code)
-
-        for (review in albumReviews) {
-            assertEquals(EpisodeType.ALBUM_REVIEW.code, review.type)
-        }
     }
 
     @Test
@@ -47,9 +56,11 @@ class EpisodeDaoTest : BaseTestDatabase() {
 
         val episodeId = episodeDao.insert(_episode)
 
-        val episode = episodeDao.getById(episodeId)
-
-        assertEquals(episodeId, episode.id)
+        episodeDao.getById(episodeId)
+                .test()
+                .assertValue {
+                    it.id.equals(episodeId)
+                }
     }
 
     @Test
@@ -76,16 +87,19 @@ class EpisodeDaoTest : BaseTestDatabase() {
         val newDescription = "New Description Test"
         populateEpisodesAndCategories(numberOfEpisodes)
 
-        val _episodes = episodeDao.getAll()
+        val _episodes = episodeDao.getAll().blockingFirst().first()
 
-        _episodes.first().description = newDescription
-        val episodeId = _episodes.first().id
+        _episodes.description = newDescription
+        val episodeId = _episodes.id
 
-        episodeDao.update(_episodes.first())
+        episodeDao.update(_episodes)
 
-        val episode = episodeDao.getById(episodeId)
+        episodeDao.getById(episodeId)
+                .test()
+                .assertValue {
+                    it.description == newDescription
+                }
 
-        assertEquals(newDescription, episode.description)
     }
 
     @Test
@@ -98,16 +112,16 @@ class EpisodeDaoTest : BaseTestDatabase() {
             episodeIds.add(episodeDao.insert(createEpisode()))
         }
 
-        val _episode1 = episodeDao.getById(episodeIds[0])
+        val _episode1 = episodeDao.getById(episodeIds[0]).blockingGet()
         _episode1.description = newDescription
-        val _episode2 = episodeDao.getById(episodeIds[1])
+        val _episode2 = episodeDao.getById(episodeIds[1]).blockingGet()
         _episode2.description = newDescription
-        val _episode3 = episodeDao.getById(episodeIds[2])
+        val _episode3 = episodeDao.getById(episodeIds[2]).blockingGet()
         _episode3.description = newDescription
 
         episodeDao.update(_episode1, _episode2, _episode3)
 
-        val episodes = episodeDao.getAll()
+        val episodes = episodeDao.getAll().blockingFirst()
 
         for (episode in episodes) {
             for (episodeId in episodeIds) {
@@ -129,11 +143,9 @@ class EpisodeDaoTest : BaseTestDatabase() {
 
         episodeDao.deleteById(episodeId)
 
-        val episodes = episodeDao.getAll()
-
-        for (episode in episodes) {
-            assertNotEquals(episodeId, episode.id)
-        }
+        episodeDao.getById(episodeId)
+                .test()
+                .assertNoValues()
     }
 
     @Test
@@ -142,23 +154,11 @@ class EpisodeDaoTest : BaseTestDatabase() {
 
         episodeDao.deleteAll()
 
-        val episodes = episodeDao.getAll()
-
-        assert.that(episodes, isEmpty)
-    }
-
-    @Test
-    fun writeEpisodeWithCategoryAndRead() {
-        val episode = createEpisode()
-
-        val episodeId = episodeDao.insert(episode)
-
-        val category = categoryDao.insert(Category(name = "podcast", episodeId = episodeId))
-
-        val episodes: List<EpisodeCategories> = episodeCategoriesDao.getEpisodesWithCategories()
-
-        assertNotEquals("", episodes.first().episode.title)
-        assertEquals(category, episodes.first().categories.first().id)
+        episodeDao.getAll()
+                .test()
+                .assertValue {
+                    it.isEmpty()
+                }
     }
 
 }

@@ -1,24 +1,31 @@
 package com.borderdev.data.database
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.runner.AndroidJUnit4
 import com.natpryce.hamkrest.assertion.assert
 import com.natpryce.hamkrest.isEmpty
 import org.junit.Assert.*
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class PostDaoTest : BaseTestDatabase() {
 
+    @get: Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
     val numberOfPosts = 10
 
     @Test
     fun getAllTest() {
         populatePost(numberOfPosts)
 
-        val posts = postDao.getAll()
+        postDao.getAll()
+                .test()
+                .assertValue {
+                    it.isNotEmpty()
+                }
 
-        assertTrue(posts.isNotEmpty())
     }
 
     @Test
@@ -27,9 +34,12 @@ class PostDaoTest : BaseTestDatabase() {
 
         val postId = postDao.insert(_post)
 
-        val post = postDao.getById(postId)
+        postDao.getById(postId)
+                .test()
+                .assertValue {
+                    it.id.equals(postId)
+                }
 
-        assertEquals(postId, post.id)
     }
 
     @Test
@@ -56,16 +66,19 @@ class PostDaoTest : BaseTestDatabase() {
         val newTitle = "New Title Test"
         populatePost(numberOfPosts)
 
-        val _posts = postDao.getAll()
+        val _posts = postDao.getAll().blockingFirst()
 
         _posts.first().title = newTitle
-        val episodeId = _posts.first().id
+        val postId = _posts.first().id
 
         postDao.update(_posts.first())
 
-        val post = postDao.getById(episodeId)
+        postDao.getById(postId)
+                .test()
+                .assertValue {
+                    it.title == newTitle
+                }
 
-        assertEquals(newTitle, post.title)
     }
 
     @Test
@@ -78,16 +91,16 @@ class PostDaoTest : BaseTestDatabase() {
             postIds.add(postDao.insert(createPost()))
         }
 
-        val _post1 = postDao.getById(postIds[0])
+        val _post1 = postDao.getById(postIds[0]).blockingGet()
         _post1.title = newTitle
-        val _post2 = postDao.getById(postIds[1])
+        val _post2 = postDao.getById(postIds[1]).blockingGet()
         _post2.title = newTitle
-        val _post3 = postDao.getById(postIds[2])
+        val _post3 = postDao.getById(postIds[2]).blockingGet()
         _post3.title = newTitle
 
         postDao.update(_post1, _post2, _post3)
 
-        val posts = postDao.getAll()
+        val posts = postDao.getAll().blockingFirst()
 
         for (post in posts) {
             for (postId in postIds) {
@@ -108,11 +121,9 @@ class PostDaoTest : BaseTestDatabase() {
 
         postDao.deleteById(postId)
 
-        val posts = postDao.getAll()
-
-        for (post in posts) {
-            assertNotEquals(postId, post.id)
-        }
+        postDao.getById(postId)
+                .test()
+                .assertNoValues()
     }
 
     @Test
@@ -121,8 +132,11 @@ class PostDaoTest : BaseTestDatabase() {
 
         postDao.deleteAll()
 
-        val posts = postDao.getAll()
+        postDao.getAll()
+                .test()
+                .assertValue {
+                    it.isEmpty()
+                }
 
-        assert.that(posts, isEmpty)
     }
 }
