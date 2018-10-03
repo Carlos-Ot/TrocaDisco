@@ -1,20 +1,18 @@
 apply plugin: 'com.android.library'
-
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
-
 android {
-    def BASE_URL = "BASE_URL"
-
     compileSdkVersion 28
+
+
+
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -22,11 +20,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            buildConfigField "String", BASE_URL, '"https://trocaodisco.com.br"'
-        }
-        debug {
-            buildConfigField "String", BASE_URL, '"https://trocaodisco.com.br"'
         }
     }
 
@@ -34,11 +27,13 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':data')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:$app_compat_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
+    //RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjava_android_version"
 
     //Dependency Injection
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
@@ -46,4 +41,13 @@ dependencies {
 
     //Tests
     implementation "com.natpryce:hamkrest:$hamkrest_version"
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test:runner:$test_runner_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+}
+repositories {
+    mavenCentral()
 }

@@ -27,27 +27,38 @@ android {
 }
 
 dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation project(':core')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    //Module Dependencies
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_interceptor_version"
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+//    implementation "com.google.code.gson:gson:$gson_version"
 
-    implementation "com.google.code.gson:gson:$gson_version"
-
+    //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
+    //OkHttp
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_interceptor_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+
+    //TikXML
     implementation "com.tickaroo.tikxml:retrofit-converter:$tickaroo_version"
     implementation "com.tickaroo.tikxml:annotation:$tickaroo_version"
     implementation "com.tickaroo.tikxml:core:$tickaroo_version"
     kapt "com.tickaroo.tikxml:processor:$tickaroo_version"
 
+    //Jspoon
     implementation "pl.droidsonroids:jspoon:$jspoon_version"
     implementation "pl.droidsonroids.retrofit2:converter-jspoon:$jspoon_version"
 
+    //Jsoup
     implementation "org.jsoup:jsoup:$jsoup_version"
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "androidx.room:room-guava:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     //Test Dependencies
     testImplementation "junit:junit:$junit_version"
@@ -57,13 +68,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "androidx.room:room-testing:$room_version"
-
-    //Room
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-rxjava2:$room_version"
-    implementation "androidx.room:room-guava:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-
+    implementation "com.natpryce:hamkrest:$hamkrest_version"
 
 }
 repositories {

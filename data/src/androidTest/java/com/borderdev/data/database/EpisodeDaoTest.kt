@@ -2,7 +2,9 @@ package com.borderdev.data.database
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.runner.AndroidJUnit4
-import com.borderdev.data.source.local.database.entity.enum.EpisodeType
+import com.borderdev.data.local.database.entity.Category
+import com.borderdev.data.local.database.entity.EpisodeCategories
+import com.borderdev.data.local.database.enums.EpisodeType
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Rule
@@ -31,10 +33,10 @@ class EpisodeDaoTest : BaseTestDatabase() {
     fun getPodcastTest() {
         populateEpisodesAndCategories(numberOfEpisodes)
 
-        val episodes = episodeDao.getByType(EpisodeType.PODCAST.code).blockingFirst()
+        val episodes = episodeDao.getByType(EpisodeType.PODCAST).blockingFirst()
 
         for (episode in episodes) {
-            assertEquals(EpisodeType.PODCAST.code, episode.episodeType)
+            assertEquals(EpisodeType.PODCAST, episode.episodeType)
         }
     }
 
@@ -42,10 +44,10 @@ class EpisodeDaoTest : BaseTestDatabase() {
     fun getReviewTest() {
         populateEpisodesAndCategories(numberOfEpisodes)
 
-        val episodes = episodeDao.getByType(EpisodeType.ALBUM_REVIEW.code).blockingFirst()
+        val episodes = episodeDao.getByType(EpisodeType.ALBUM_REVIEW).blockingFirst()
 
         for (episode in episodes) {
-            assertEquals(EpisodeType.ALBUM_REVIEW.code, episode.episodeType)
+            assertEquals(EpisodeType.ALBUM_REVIEW, episode.episodeType)
         }
 
     }
@@ -159,6 +161,20 @@ class EpisodeDaoTest : BaseTestDatabase() {
                 .assertValue {
                     it.isEmpty()
                 }
+    }
+
+    @Test
+    fun writeEpisodeWithCategoryAndRead() {
+        val episode = createEpisode()
+
+        val episodeId = episodeDao.insert(episode)
+
+        val category = categoryDao.insert(Category(name = "podcast", episodeId = episodeId))
+
+        val episodes: List<EpisodeCategories> = episodeCategoriesDao.getEpisodesCategories().blockingFirst()
+
+        assertNotEquals("", episodes.first().episode.title)
+        assertEquals(category, episodes.first().categories.first().id)
     }
 
 }

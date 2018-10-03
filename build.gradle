@@ -1,11 +1,14 @@
 ext {
     app_compat_version = '1.0.0'
+
     constraint_layout_version = '2.0.0-alpha2'
 
     core_testing_version = '2.0.0'
 
     junit_version = '4.12'
+
     test_runner_version = '1.1.0-alpha4'
+
     test_espresso_version = '3.1.0-alpha4'
 
     okhttp_logging_interceptor_version = '3.4.1'
@@ -17,6 +20,8 @@ ext {
     gson_version = '2.6.2'
 
     rxjava_android_version = '2.0.2'
+
+    rxjava_version = '2.0.2'
 
     retrofit_version = '2.4.0'
 

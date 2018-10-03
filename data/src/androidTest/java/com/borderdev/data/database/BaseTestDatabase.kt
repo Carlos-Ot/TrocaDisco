@@ -2,15 +2,15 @@ package com.borderdev.data.database
 
 import android.content.Context
 import androidx.test.InstrumentationRegistry
-import com.borderdev.data.source.local.database.entity.Category
-import com.borderdev.data.source.local.database.entity.Episode
-import com.borderdev.data.source.local.database.entity.Post
-import com.borderdev.data.source.local.database.entity.enum.EpisodeType
-import com.borderdev.data.source.local.database.AppDatabase
-import com.borderdev.data.source.local.database.dao.CategoryDao
-import com.borderdev.data.source.local.database.dao.EpisodeCategoriesDao
-import com.borderdev.data.source.local.database.dao.EpisodeDao
-import com.borderdev.data.source.local.database.dao.PostDao
+import com.borderdev.data.local.database.entity.Category
+import com.borderdev.data.local.database.entity.Episode
+import com.borderdev.data.local.database.entity.Post
+import com.borderdev.data.local.database.enums.EpisodeType
+import com.borderdev.data.local.database.AppDatabase
+import com.borderdev.data.local.database.dao.CategoryDao
+import com.borderdev.data.local.database.dao.EpisodeCategoriesDao
+import com.borderdev.data.local.database.dao.EpisodeDao
+import com.borderdev.data.local.database.dao.PostDao
 import org.junit.After
 import org.junit.BeforeClass
 import java.util.*
@@ -74,9 +74,13 @@ abstract class BaseTestDatabase {
             title = episodeNames.get(Random().nextInt(episodeNames.size)),
             episodeNumber = 1,
             description = "In this episode we will test the Database",
+            content = "In this episode we will test the Database with content",
             pubDate = "18-09-2018",
             downloadUrl = "http://podcast.com",
-            type = EpisodeType.DEFAULT.code)
+            downloaded = false,
+            downloadPath = "",
+            episodeType = EpisodeType.values()[Random().nextInt(EpisodeType.values().size)],
+            categories = emptyList())
 
     fun createCategory(episodeId: Long) = Category(name = "podcast", episodeId = episodeId)
 
@@ -94,9 +98,13 @@ abstract class BaseTestDatabase {
                             title = episodeNames.get(Random().nextInt(episodeNames.size)),
                             episodeNumber = index,
                             description = "In this episode we will test the Database",
+                            content = "In this episode we will test the Database with content",
                             pubDate = "18-09-2018",
                             downloadUrl = "http://podcast.com",
-                            type = Random().nextInt(EpisodeType.values().size))
+                            downloaded = false,
+                            downloadPath = "",
+                            episodeType = EpisodeType.values()[Random().nextInt(EpisodeType.values().size)],
+                            categories = emptyList())
             )
         }
 
@@ -125,9 +133,13 @@ abstract class BaseTestDatabase {
                             title = episodeNames.get(Random().nextInt(episodeNames.size)),
                             episodeNumber = index,
                             description = "In this episode we will test the Database",
+                            content = "In this episode we will test the Database with content",
                             pubDate = "18-09-2018",
                             downloadUrl = "http://podcast.com",
-                            type = Random().nextInt(EpisodeType.values().size))
+                            downloaded = false,
+                            downloadPath = "",
+                            episodeType = EpisodeType.values()[Random().nextInt(EpisodeType.values().size)],
+                            categories = emptyList())
             )
         }
     }
