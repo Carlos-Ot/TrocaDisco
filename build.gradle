@@ -35,7 +35,7 @@ ext {
 
     jsoup_version = '1.11.3'
 
-    kodein_version = '5.2.0'
+    kodein_version = '5.3.0'
 
     mockito_version = '2.15.0'
 

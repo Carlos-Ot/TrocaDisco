@@ -1,5 +1,6 @@
 package com.borderdev.data.local
 
+import com.borderdev.data.local.database.AppDatabase
 import com.borderdev.domain.datasource.PostLocalDataSource
 import com.borderdev.data.local.database.dao.PostDao
 import com.borderdev.data.local.mapper.PostMapper
@@ -10,7 +11,9 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 
-class PostLocalDataSource(private val postDao: PostDao) : PostLocalDataSource {
+class PostLocalDataSource(private val appDatabase: AppDatabase) : PostLocalDataSource {
+
+    private val postDao: PostDao = appDatabase.postDao()
 
     override fun getPosts(): Observable<List<Post>> {
         return postDao.getAll()

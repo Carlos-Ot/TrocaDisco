@@ -1,5 +1,6 @@
 package com.borderdev.data.local
 
+import com.borderdev.data.local.database.AppDatabase
 import com.borderdev.data.local.database.dao.CategoryDao
 import com.borderdev.domain.datasource.PodcastLocalDataSource
 import com.borderdev.data.local.database.dao.EpisodeCategoriesDao
@@ -15,7 +16,11 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
-class PodcastLocalDataSource(private val episodeDao: EpisodeDao, private val episodeCategoriesDao: EpisodeCategoriesDao, private val categoryDao: CategoryDao) : PodcastLocalDataSource {
+class PodcastLocalDataSource(private val appDatabase: AppDatabase) : PodcastLocalDataSource {
+
+    private val episodeDao: EpisodeDao = appDatabase.episodeDao()
+    private val episodeCategoriesDao: EpisodeCategoriesDao = appDatabase.episodeCategoriesDao()
+    private val categoryDao: CategoryDao = appDatabase.categoryDao()
 
     override fun getEpisodes(): Flowable<List<Episode>> {
         return episodeCategoriesDao.getEpisodesCategories()

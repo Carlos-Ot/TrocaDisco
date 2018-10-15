@@ -54,6 +54,14 @@ dependencies {
 
     implementation project(':core')
     implementation project(':data')
+    implementation project(':domain')
+    implementation project(':presentation')
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "androidx.room:room-guava:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     //Test Dependencies
     testImplementation "junit:junit:$junit_version"
