@@ -2,10 +2,10 @@ package com.borderdev.data.database
 
 import android.content.Context
 import androidx.test.InstrumentationRegistry
-import com.borderdev.data.local.database.entity.Category
-import com.borderdev.data.local.database.entity.Episode
-import com.borderdev.data.local.database.entity.Post
-import com.borderdev.data.local.database.enums.EpisodeType
+import com.borderdev.data.local.database.entity.CategoryEntity
+import com.borderdev.data.local.database.entity.EpisodeEntity
+import com.borderdev.data.local.database.entity.PostEntity
+import com.borderdev.domain.enums.EpisodeType
 import com.borderdev.data.local.database.AppDatabase
 import com.borderdev.data.local.database.dao.CategoryDao
 import com.borderdev.data.local.database.dao.EpisodeCategoriesDao
@@ -70,7 +70,7 @@ abstract class BaseTestDatabase {
     }
 
 
-    fun createEpisode(): Episode = Episode(
+    fun createEpisode(): EpisodeEntity = EpisodeEntity(
             title = episodeNames.get(Random().nextInt(episodeNames.size)),
             episodeNumber = 1,
             description = "In this episode we will test the Database",
@@ -82,9 +82,9 @@ abstract class BaseTestDatabase {
             episodeType = EpisodeType.values()[Random().nextInt(EpisodeType.values().size)],
             categories = emptyList())
 
-    fun createCategory(episodeId: Long) = Category(name = "podcast", episodeId = episodeId)
+    fun createCategory(episodeId: Long) = CategoryEntity(name = "podcast", episodeId = episodeId)
 
-    fun createPost() = Post(
+    fun createPost() = PostEntity(
             title = episodeNames.get(Random().nextInt(episodeNames.size)),
             postUrl = "http://post.com",
             pubDate = "18-09-2018",
@@ -94,7 +94,7 @@ abstract class BaseTestDatabase {
 
         for (index in 0..numberOfEpisodes) {
             episodeDao.insert(
-                    Episode(
+                    EpisodeEntity(
                             title = episodeNames.get(Random().nextInt(episodeNames.size)),
                             episodeNumber = index,
                             description = "In this episode we will test the Database",
@@ -113,13 +113,13 @@ abstract class BaseTestDatabase {
 
         for (episode in episodes) {
             categoryDao.insert(
-                    Category(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
+                    CategoryEntity(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
                             episodeId = episode.id),
-                    Category(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
+                    CategoryEntity(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
                             episodeId = episode.id),
-                    Category(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
+                    CategoryEntity(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
                             episodeId = episode.id),
-                    Category(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
+                    CategoryEntity(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
                             episodeId = episode.id)
             )
         }
@@ -129,7 +129,7 @@ abstract class BaseTestDatabase {
     fun populateEpisodes(numberOfEpisodes: Int) {
         for (index in 0..numberOfEpisodes) {
             episodeDao.insert(
-                    Episode(
+                    EpisodeEntity(
                             title = episodeNames.get(Random().nextInt(episodeNames.size)),
                             episodeNumber = index,
                             description = "In this episode we will test the Database",
@@ -148,7 +148,7 @@ abstract class BaseTestDatabase {
 
         for (index in 0..numberOfPosts) {
             postDao.insert(
-                    Post(
+                    PostEntity(
                             title = episodeNames.get(Random().nextInt(episodeNames.size)),
                             postUrl = "http://post.com",
                             pubDate = "18-09-2018",
@@ -167,7 +167,7 @@ abstract class BaseTestDatabase {
         for (episode in episodes) {
             for (index in 0..numberOfCategories) {
                 categoryDao.insert(
-                        Category(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
+                        CategoryEntity(name = categoriesNames.get(Random().nextInt(categoriesNames.size)),
                                 episodeId = episode.id))
             }
         }

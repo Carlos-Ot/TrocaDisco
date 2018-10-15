@@ -4,8 +4,8 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 data class EpisodeCategories (
-        @Embedded var episode: Episode = Episode(),
+        @Embedded var episode: EpisodeEntity = EpisodeEntity(),
 
-        @Relation(parentColumn = "_id", entityColumn = "episode_id", entity = Category::class)
-        var categories: List<Category> = emptyList()
+        @Relation(parentColumn = "_id", entityColumn = "episode_id", entity = CategoryEntity::class)
+        var categoryEntities: List<CategoryEntity> = emptyList()
 )

@@ -1,8 +1,8 @@
 package com.borderdev.data.local.database.converters
 
 import androidx.room.TypeConverter
-import com.borderdev.data.local.database.enums.EpisodeType
-import com.borderdev.data.local.database.enums.PostType
+import com.borderdev.domain.enums.EpisodeType
+import com.borderdev.domain.enums.PostType
 
 class EpisodeTypeConverter {
 

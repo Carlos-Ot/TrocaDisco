@@ -1,8 +1,11 @@
 package com.borderdev.data.remote.parser
 
-import com.borderdev.data.local.database.entity.Episode
-import com.borderdev.data.local.database.enums.EpisodeType
+import com.borderdev.data.local.database.entity.CategoryEntity
 import com.borderdev.data.remote.network.entity.Item
+import com.borderdev.data.remote.network.entity.RemoteCategory
+import com.borderdev.domain.enums.EpisodeType
+import com.borderdev.domain.model.Category
+import com.borderdev.domain.model.Episode
 import org.jsoup.Jsoup
 
 object EpisodeParser: Parser<Item, Episode> {
@@ -27,7 +30,8 @@ object EpisodeParser: Parser<Item, Episode> {
                 downloadUrl = getDownloadUrl(remote.content),
                 downloaded = false,
                 downloadPath = "",
-                episodeType = getEpisodeType(remote.title)
+                episodeType = getEpisodeType(remote.title),
+                categories = getCategories(remote.categories)
         )
     }
 
@@ -65,5 +69,15 @@ object EpisodeParser: Parser<Item, Episode> {
         }
 
         return episodeType
+    }
+
+    private fun getCategories(remoteCategories: List<RemoteCategory>): List<Category> {
+        val categories: MutableList<Category> = mutableListOf()
+
+        remoteCategories.forEach {
+            val category = CategoryParser.parse(it)
+            categories.add(category)
+        }
+        return categories.toList()
     }
 }

@@ -1,39 +1,62 @@
 package com.borderdev.data.local
 
-import com.borderdev.data.datasource.local.PostLocalDataSource
-import com.borderdev.data.local.database.entity.Post
+import com.borderdev.domain.datasource.PostLocalDataSource
 import com.borderdev.data.local.database.dao.PostDao
-import com.borderdev.data.local.database.enums.PostType
+import com.borderdev.data.local.mapper.PostMapper
+import com.borderdev.domain.enums.PostType
+import com.borderdev.domain.model.Post
+import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 class PostLocalDataSource(private val postDao: PostDao) : PostLocalDataSource {
 
-    override fun getPosts(): Flowable<List<Post>> {
+    override fun getPosts(): Observable<List<Post>> {
         return postDao.getAll()
+                .map { posts ->
+                    posts.map { PostMapper.toDomain(it) }
+                }
     }
 
     override fun getPost(postId: Long): Single<Post> {
         return postDao.getById(postId)
+                .map { PostMapper.toDomain(it) }
     }
 
     override fun getPostsByType(type: PostType): Flowable<List<Post>> {
         return postDao.getByType(type)
+                .map { posts ->
+                    posts.map { PostMapper.toDomain(it) }
+                }
     }
 
-    override fun savePost(post: Post) {
-        postDao.insert(post)
+    override fun savePost(post: Post): Completable {
+        return Completable.defer {
+            postDao.insert(PostMapper.fromDomain(post))
+            Completable.complete()
+        }
     }
 
-    override fun removePost(postId: Long) {
-        postDao.deleteById(postId)
+    override fun removePost(postId: Long): Completable {
+        return Completable.defer {
+            postDao.deleteById(postId)
+            Completable.complete()
+        }
     }
 
-    override fun updatePost(post: Post) {
-        postDao.update(post)
+    override fun updatePost(post: Post): Completable {
+        return Completable.defer {
+            postDao.update(PostMapper.fromDomain(post))
+            Completable.complete()
+        }
     }
 
-    override fun clearData() {
-        postDao.deleteAll()
+    override fun clearData(): Completable {
+        return Completable.defer {
+            postDao.deleteAll()
+            Completable.complete()
+        }
     }
+
 }

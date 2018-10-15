@@ -10,11 +10,11 @@ import com.borderdev.data.local.database.dao.CategoryDao
 import com.borderdev.data.local.database.dao.EpisodeCategoriesDao
 import com.borderdev.data.local.database.dao.EpisodeDao
 import com.borderdev.data.local.database.dao.PostDao
-import com.borderdev.data.local.database.entity.Category
-import com.borderdev.data.local.database.entity.Episode
-import com.borderdev.data.local.database.entity.Post
+import com.borderdev.data.local.database.entity.CategoryEntity
+import com.borderdev.data.local.database.entity.EpisodeEntity
+import com.borderdev.data.local.database.entity.PostEntity
 
-@Database(entities = [Episode::class, Post::class, Category::class], version = 1, exportSchema = false)
+@Database(entities = [EpisodeEntity::class, PostEntity::class, CategoryEntity::class], version = 1, exportSchema = false)
 @TypeConverters(EpisodeTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 

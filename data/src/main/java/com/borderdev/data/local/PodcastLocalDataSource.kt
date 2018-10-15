@@ -1,53 +1,76 @@
 package com.borderdev.data.local
 
-import com.borderdev.data.datasource.local.PodcastLocalDataSource
+import com.borderdev.data.local.database.dao.CategoryDao
+import com.borderdev.domain.datasource.PodcastLocalDataSource
 import com.borderdev.data.local.database.dao.EpisodeCategoriesDao
 import com.borderdev.data.local.database.dao.EpisodeDao
-import com.borderdev.data.local.database.entity.Episode
+import com.borderdev.data.local.database.entity.CategoryEntity
 import com.borderdev.data.local.database.entity.EpisodeCategories
-import com.borderdev.data.local.database.enums.EpisodeType
+import com.borderdev.data.local.mapper.CategoryMapper
+import com.borderdev.data.local.mapper.EpisodeCategoriesMapper
+import com.borderdev.data.local.mapper.EpisodeMapper
+import com.borderdev.domain.enums.EpisodeType
+import com.borderdev.domain.model.Episode
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
-class PodcastLocalDataSource(private val episodeDao: EpisodeDao, private val episodeCategoriesDao: EpisodeCategoriesDao) : PodcastLocalDataSource {
+class PodcastLocalDataSource(private val episodeDao: EpisodeDao, private val episodeCategoriesDao: EpisodeCategoriesDao, private val categoryDao: CategoryDao) : PodcastLocalDataSource {
 
     override fun getEpisodes(): Flowable<List<Episode>> {
-        return episodeDao.getAll()
-    }
-
-    override fun getEpisodesCategories(): Flowable<List<EpisodeCategories>> {
         return episodeCategoriesDao.getEpisodesCategories()
-    }
-
-    override fun getEpisodesCategoriesByTipe(episodeType: EpisodeType): Flowable<List<EpisodeCategories>> {
-        return episodeCategoriesDao.getEpisodesCategoriesByType(episodeType)
-    }
-
-    override fun getEpisodeCategoryById(episodeId: Long): EpisodeCategories {
-        return episodeCategoriesDao.getEpisodeCategoryById(episodeId)
+                .map { episodeCategories ->
+                    episodeCategories.map { EpisodeCategoriesMapper.toDomain(it) }
+                }
     }
 
     override fun getEpisodesByType(type: EpisodeType): Flowable<List<Episode>> {
-        return episodeDao.getByType(type)
+        return episodeCategoriesDao.getEpisodesCategoriesByType(type)
+                .map { episodeCategories ->
+                    episodeCategories.map { EpisodeCategoriesMapper.toDomain(it) }
+                }
     }
 
     override fun getEpisode(episodeId: Long): Single<Episode> {
-        return episodeDao.getById(episodeId)
+        return episodeCategoriesDao.getEpisodeCategoryById(episodeId)
+                .map { EpisodeCategoriesMapper.toDomain(it) }
     }
 
-    override fun saveEpisode(episode: Episode) {
-        episodeDao.insert(episode)
+    override fun saveEpisode(episode: Episode): Completable {
+        return Completable.defer {
+            episodeCategoriesDao.insertEpisodeWithCategories(
+                    EpisodeMapper.fromDomain(episode),
+                    episode.categories.map { CategoryMapper.fromDomain(it) },
+                    episodeDao,
+                    categoryDao
+                    )
+            Completable.complete()
+        }
     }
 
-    override fun removeEpisode(episodeId: Long) {
-        episodeDao.deleteById(episodeId)
+    override fun removeEpisode(episodeId: Long): Completable {
+        return Completable.defer {
+            episodeCategoriesDao.deleteEpisodeWithCategories(
+                    episodeId,
+                    episodeDao,
+                    categoryDao
+            )
+            Completable.complete()
+        }
     }
 
-    override fun updateEpisode(episode: Episode) {
-        episodeDao.update(episode)
+    override fun updateEpisode(episode: Episode): Completable {
+        return Completable.defer {
+            episodeDao.update(EpisodeMapper.fromDomain(episode))
+            Completable.complete()
+        }
     }
 
-    override fun clearData() {
-        episodeDao.deleteAll()
+    override fun clearData(): Completable {
+        return Completable.defer {
+            episodeDao.deleteAll()
+            categoryDao.deleteAll()
+            Completable.complete()
+        }
     }
 }
