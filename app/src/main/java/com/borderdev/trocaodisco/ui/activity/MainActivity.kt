@@ -1,56 +1,41 @@
 package com.borderdev.trocaodisco.ui.activity
 
-import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import com.borderdev.domain.enums.EpisodeType
 import com.borderdev.domain.model.Episode
-import com.borderdev.presentation.BaseViewModel
-import com.borderdev.presentation.EpisodeListViewModel
+import com.borderdev.presentation.main.MainPresenter
+import com.borderdev.presentation.main.MainView
 import com.borderdev.trocaodisco.R
 import com.borderdev.trocaodisco.ui.common.BaseActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 
-class MainActivity() : BaseActivity<List<Episode>>() {
+
+class MainActivity() : BaseActivity<MainView>(), MainView {
 
     override val kodein: Kodein by closestKodein()
 
     override val layoutId: Int = R.layout.activity_main
+    override val presenter: MainPresenter by instance()
 
-    override val viewModel: EpisodeListViewModel by instance()
+    override fun setPresenter() {
+        presenter.attachView(this)
+    }
 
     override fun onCreate() {
+        presenter.subscribe()
     }
 
-    override fun observe() {
-        viewModel.episodeType = EpisodeType.PODCAST
-        viewModel.getState().observe(this, Observer { newState ->
-            newState?.let {
-                handleState(it)
-            }
-        })
-    }
-
-    override fun progressIndicator(visible: Boolean) {
-        progressBar.visibility = if (visible) View.VISIBLE else View.GONE
-    }
-
-    override fun handleSuccess(data: List<Episode>) {
-        progressIndicator(false)
-        data.forEach {
-            Log.d("XABLAU", "Episode: ${it.title}")
-        }
-    }
-
-    override fun handleError(error: Throwable) {
-        progressIndicator(false)
+    override fun showError(error: Throwable) {
         Log.e("XABLAU", "Error: ${error.message}")
     }
+
+    override fun showContent(episodes: List<Episode>) {
+        val episode = episodes.first()
+
+        Log.d("XABLAU", "Episode: $episode")
+
+    }
+
 
 }

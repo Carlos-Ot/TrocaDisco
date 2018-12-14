@@ -17,22 +17,19 @@ class PodcastRepository(
         private val localDataSource: PodcastLocalDataSource
 ): PodcastRepository {
 
-    override fun getEpisodes(): Flowable<List<Episode>> {
+    override fun getEpisodes(): Observable<List<Episode>> {
         return remoteDataSource.getEpisodes()
-                .publish { remote ->
-                    remote.flatMap { episodes ->
-                        episodes.forEach {
-                            localDataSource.saveEpisode(it)
-                        }
-                        Flowable.just(episodes)
+                .flatMap { episodes ->
+                    episodes.forEach {
+                        localDataSource.saveEpisode(it)
                     }
-
-                    Flowable.merge(remote, localDataSource.getEpisodes().takeUntil(remote))
-                }
+                    Flowable.just(episodes)
+                }.toObservable()
     }
 
-    override fun getEpisodesByType(type: EpisodeType): Flowable<List<Episode>> {
-        return localDataSource.getEpisodesByType(type)
+
+    override fun getEpisodesByType(type: EpisodeType): Observable<List<Episode>> {
+        return localDataSource.getEpisodesByType(type).toObservable()
     }
 
     override fun getEpisode(episodeId: Long): Single<Episode> {

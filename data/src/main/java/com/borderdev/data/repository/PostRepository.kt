@@ -17,14 +17,12 @@ class PostRepository(
 
     override fun getPosts(): Observable<List<Post>> {
         return remoteDataSource.getPosts()
-                .publish { remote ->
-                    remote.flatMap { posts ->
-                        posts.forEach {
-                            localDataSource.savePost(it)
-                        }
-                        Observable.just(posts)
+                .flatMap { posts ->
+                    posts.forEach {
+                        localDataSource.savePost(it)
                     }
-                    Observable.merge(remote, localDataSource.getPosts().takeUntil(remote))
+
+                    Observable.just(posts)
                 }
     }
 

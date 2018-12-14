@@ -4,7 +4,7 @@ import com.borderdev.domain.model.Episode
 import com.borderdev.domain.repository.PodcastRepository
 import com.borderdev.domain.schedulers.BaseScheduler
 import com.borderdev.domain.usecases.BaseUseCase
-import io.reactivex.Flowable
+import io.reactivex.Observable
 
 class GetEpisodes(
         private val repository: PodcastRepository,
@@ -20,5 +20,6 @@ class GetEpisodes(
     }
 
     class EpisodesRequestValues: RequestValues
-    class EpisodesResultValues(val flowable: Flowable<List<Episode>>): ResultValues
+    class EpisodesResultValues(val observable: Observable<List<Episode>>): ResultValues
+
 }

@@ -38,8 +38,8 @@ object EpisodeParser: Parser<Item, Episode> {
     private fun getEpisodeNumber(title: String): Int {
         val regex = Regex(numberRegex)
         val number = regex.find(title)
-        val episodeNumber = number?.value ?: defaultNumber
-        episodeNumber.replace(numberDelimiter,  emptyString)
+        var episodeNumber = number?.value ?: defaultNumber
+        episodeNumber = episodeNumber.replace(numberDelimiter,  emptyString)
 
         return episodeNumber.toInt()
     }
@@ -58,7 +58,7 @@ object EpisodeParser: Parser<Item, Episode> {
 
     private fun getEpisodeType(title: String) : EpisodeType {
         val substrings = title.split(numberDelimiter)
-        val stringType = substrings.first()
+        val stringType = substrings.first().trim()
 
         val episodeType : EpisodeType
 

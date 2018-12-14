@@ -2,49 +2,33 @@ package com.borderdev.trocaodisco.ui.common
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.borderdev.presentation.BaseViewModel
-import com.borderdev.presentation.ViewState
+import com.borderdev.presentation.common.BasePresenter
+import com.borderdev.presentation.common.BaseView
+
 import org.kodein.di.KodeinAware
 
-abstract class BaseActivity<D>: AppCompatActivity(), KodeinAware {
+abstract class BaseActivity<V: BaseView>: AppCompatActivity(), KodeinAware, BaseView {
 
     protected abstract val layoutId: Int
-    protected abstract val viewModel: BaseViewModel<D>
+    protected abstract val presenter: BasePresenter<V>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
-        lifecycle.addObserver(viewModel)
-        observe()
 
+        setPresenter()
+        onCreate()
+
+        presenter.subscribe()
     }
+
+    protected abstract fun setPresenter()
 
     protected abstract fun onCreate()
 
-    protected abstract fun observe()
-
-    protected abstract fun progressIndicator(visible: Boolean)
-
-    protected abstract fun handleSuccess(data: D)
-
-    protected abstract fun handleError(error: Throwable)
-
-    protected fun handleState(state: ViewState<D>) {
-        when (state.status) {
-            ViewState.Status.LOADING -> {
-                progressIndicator(true)
-            }
-            ViewState.Status.SUCCESS -> {
-                state.data?.let {
-                    handleSuccess(it)
-                }
-            }
-            ViewState.Status.ERROR -> {
-                state.error?.let {
-                    handleError(it)
-                }
-            }
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.unsubscribe()
     }
 
 }
