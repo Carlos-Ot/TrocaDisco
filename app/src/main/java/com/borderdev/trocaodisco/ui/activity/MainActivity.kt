@@ -23,7 +23,6 @@ class MainActivity() : BaseActivity<MainView>(), MainView {
     }
 
     override fun onCreate() {
-        presenter.subscribe()
     }
 
     override fun showError(error: Throwable) {
@@ -31,7 +30,7 @@ class MainActivity() : BaseActivity<MainView>(), MainView {
     }
 
     override fun showContent(episodes: List<Episode>) {
-        val episode = episodes.first()
+        val episode = episodes
 
         Log.d("XABLAU", "Episode: $episode")
 

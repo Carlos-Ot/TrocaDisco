@@ -4,14 +4,15 @@ import com.borderdev.domain.enums.EpisodeType
 import com.borderdev.domain.model.Episode
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 
 interface PodcastRepository {
 
-    fun getEpisodes(): Observable<List<Episode>>
+    fun loadEpisodes(): Completable
 
-    fun getEpisodesByType(type: EpisodeType): Observable<List<Episode>>
+    fun getEpisodes(): Flowable<List<Episode>>
+
+    fun getEpisodesByType(type: EpisodeType): Flowable<List<Episode>>
 
     fun getEpisode(episodeId: Long): Single<Episode>
 

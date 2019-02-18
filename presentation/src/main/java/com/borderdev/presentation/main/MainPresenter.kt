@@ -1,16 +1,14 @@
 package com.borderdev.presentation.main
 
-import com.borderdev.domain.enums.EpisodeType
-import com.borderdev.domain.usecases.episode.GetEpisodeByType
 import com.borderdev.domain.usecases.episode.GetEpisodes
 import com.borderdev.presentation.common.BasePresenter
 import io.reactivex.disposables.Disposable
 
 class MainPresenter(private val useCase: GetEpisodes) : BasePresenter<MainView>(){
 
-    fun loadEpisodes() {
+    private fun getEpisodes() {
         val useCaseParam = GetEpisodes.EpisodesRequestValues()
-        val flowable = useCase.execute(useCaseParam).observable
+        val flowable = useCase.execute(useCaseParam).flowable
 
         val disposable: Disposable = flowable.subscribe(
                 {
@@ -25,7 +23,7 @@ class MainPresenter(private val useCase: GetEpisodes) : BasePresenter<MainView>(
     }
 
     override fun subscribe() {
-        loadEpisodes()
+        getEpisodes()
     }
 
     override fun unsubscribe() {

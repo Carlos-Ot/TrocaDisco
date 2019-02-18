@@ -9,6 +9,8 @@ import io.reactivex.Single
 
 interface PostRepository {
 
+    fun loadPosts(): Completable
+
     fun getPosts(): Observable<List<Post>>
 
     fun getPostsByType(type: PostType): Flowable<List<Post>>

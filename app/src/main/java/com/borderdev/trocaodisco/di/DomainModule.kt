@@ -3,10 +3,7 @@ package com.borderdev.trocaodisco.di
 import com.borderdev.domain.schedulers.BaseScheduler
 import com.borderdev.domain.schedulers.SchedulerProvider
 import com.borderdev.domain.schedulers.TestSchedulerProvider
-import com.borderdev.domain.usecases.episode.GetEpisode
-import com.borderdev.domain.usecases.episode.GetEpisodeByType
-import com.borderdev.domain.usecases.episode.GetEpisodes
-import com.borderdev.domain.usecases.episode.UpdateEpisode
+import com.borderdev.domain.usecases.episode.*
 import com.borderdev.domain.usecases.post.GetPost
 import com.borderdev.domain.usecases.post.GetPosts
 import com.borderdev.domain.usecases.post.GetPostsByType
@@ -56,5 +53,9 @@ val domainModule = Kodein.Module("domain_module") {
 
     bind<GetPostsByType>() with singleton {
         GetPostsByType(instance(), instance(MAIN_SCHEDULER_TAG))
+    }
+
+    bind<LoadEpisodes>() with singleton {
+        LoadEpisodes(instance(), instance(MAIN_SCHEDULER_TAG))
     }
 }

@@ -15,15 +15,18 @@ class PostRepository(
         private val localDataSource: PostLocalDataSource
 ) : PostRepository {
 
-    override fun getPosts(): Observable<List<Post>> {
+    override fun loadPosts(): Completable {
         return remoteDataSource.getPosts()
                 .flatMap { posts ->
                     posts.forEach {
                         localDataSource.savePost(it)
                     }
-
                     Observable.just(posts)
-                }
+                }.ignoreElements()
+    }
+
+    override fun getPosts(): Observable<List<Post>> {
+        return localDataSource.getPosts()
     }
 
     override fun getPostsByType(type: PostType): Flowable<List<Post>> {

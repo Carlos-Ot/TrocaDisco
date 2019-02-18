@@ -4,6 +4,7 @@ import com.borderdev.domain.enums.EpisodeType
 import com.borderdev.domain.model.Episode
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 interface PodcastLocalDataSource {

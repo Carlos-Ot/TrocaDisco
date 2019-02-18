@@ -8,4 +8,127 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SplashTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+
+    <style name="TextActionBar">
+        <item name="android:textSize">5sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextSubheader">
+        <item name="android:textSize">4sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingExtra">0.8sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextTitleLight">
+        <item name="android:textSize">4sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.8sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextMenu">
+        <item name="android:textSize">3.5sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextSubtitleLight">
+        <item name="android:textSize">3.5sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextBody">
+        <item name="android:textSize">3.5sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextCaption">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">3.5sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">@color/black_54</item>
+    </style>
+
+    <style name="TextSubtitle">
+        <item name="android:textSize">3.5sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">@color/black_54</item>
+    </style>
+
+    <style name="TextMenuLight">
+        <item name="android:textSize">3.5sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextCaptionBold">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">3sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextCaptionLight">
+        <item name="android:textSize">3sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextCaptionMediumLight">
+        <item name="android:textSize">3sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">#ccffffff</item>
+    </style>
+
+    <style name="TextBottomBar">
+        <item name="android:textSize">2.8sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.5sp</item>
+        <item name="android:textColor">@color/black_54</item>
+    </style>
+
+    <style name="TextChip">
+        <item name="android:textSize">2.5sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:lineSpacingExtra">0.3sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
 </resources>
